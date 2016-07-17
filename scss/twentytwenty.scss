@@ -325,12 +325,61 @@ $twenty20-label-radius: 2px !default;
   cursor: pointer;
   z-index: 1;
   box-shadow: 0px 0px 12px rgba(51, 51, 51, 0.5);
+
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+  }
+
+  &:before {
+    border-bottom: $twenty20-handle-triangle-size solid $twenty20-handle-triangle-color;
+    top: 50%;
+    margin-top: -($twenty20-handle-triangle-size * 2) - $twenty20-handle-triangle-position;
+    @extend %css-triangle-vertical;
+  }
+
+  &:after {
+    border-top: $twenty20-handle-triangle-size solid $twenty20-handle-triangle-color;
+    bottom: 50%;
+    margin-bottom: -($twenty20-handle-triangle-size * 2) - $twenty20-handle-triangle-position;
+    @extend %css-triangle-vertical;
+  }
+
+  .#{$pluginPrefix}-vertical & {
+    height: 18px;
+    width: 38px;
+
+    &:before {
+      border-right: $twenty20-handle-triangle-size solid $twenty20-handle-triangle-color;
+      left: 50%;
+      margin-left: -($twenty20-handle-triangle-size * 2) - $twenty20-handle-triangle-position;
+      @extend %css-triangle-horizontal;
+    }
+
+    &:after {
+      border-left: $twenty20-handle-triangle-size solid $twenty20-handle-triangle-color;
+      left: auto;
+      right: 50%;
+      margin-right: -($twenty20-handle-triangle-size * 2) - $twenty20-handle-triangle-position;
+      @extend %css-triangle-horizontal;
+    }
+  }
 }
 
 .#{$pluginPrefix}-before-switch {
   right: 40px;
+
+  .#{$pluginPrefix}-vertical & {
+    bottom: 40px;
+    top: auto;
+  }
 }
 
 .#{$pluginPrefix}-after-switch {
   left: 40px;
+
+  .#{$pluginPrefix}-vertical & {
+    top: 40px;
+  }
 }
