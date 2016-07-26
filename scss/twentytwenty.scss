@@ -54,11 +54,11 @@ $twenty20-label-radius: 2px !default;
 }
 
 %overlay-transition-duration {
-  transition-duration: 0.5s;
+    transition-duration: 0.5s ;
 }
 
 %label-transition-property {
-  transition-property: opacity;
+    transition-property: opacity;
 }
 
 %label-text {
@@ -108,7 +108,7 @@ $twenty20-label-radius: 2px !default;
 
 // 20/20 Container
 .#{$pluginPrefix}-container {
-  box-sizing: content-box;
+    box-sizing: content-box;
   z-index: 0;
   overflow: hidden;
   position: relative;
@@ -123,16 +123,13 @@ $twenty20-label-radius: 2px !default;
   }
 
   &.active .#{$pluginPrefix}-overlay,
-  &.active :hover.#{$pluginPrefix}-overlay {
-    background: rgba(#000,0);
+  &.active :hover.#{$pluginPrefix}-overlay { background: rgba(#000,0);
 
     .#{$pluginPrefix}-before-label,
-    .#{$pluginPrefix}-after-label {
-      opacity: 0;
-    }
+    .#{$pluginPrefix}-after-label { opacity: 0; }
   }
   * {
-    box-sizing: content-box;
+      box-sizing: content-box;
   }
 }
 
@@ -168,16 +165,16 @@ $twenty20-label-radius: 2px !default;
 .#{$pluginPrefix}-horizontal .#{$pluginPrefix}-before-label {
 
   &:before {
-    @extend %label-position-horizontal;
-    left: 10px;
+     @extend %label-position-horizontal;
+     left: 10px;
   }
 }
 
 .#{$pluginPrefix}-horizontal .#{$pluginPrefix}-after-label {
 
   &:before {
-    @extend %label-position-horizontal;
-    right: 10px;
+     @extend %label-position-horizontal;
+     right: 10px;
   }
 }
 
@@ -185,16 +182,16 @@ $twenty20-label-radius: 2px !default;
 .#{$pluginPrefix}-vertical .#{$pluginPrefix}-before-label {
 
   &:before {
-    @extend %label-position-vertical;
-    top: 10px;
+     @extend %label-position-vertical;
+     top: 10px;
   }
 }
 
 .#{$pluginPrefix}-vertical .#{$pluginPrefix}-after-label {
 
   &:before {
-    @extend %label-position-vertical;
-    bottom: 10px;
+     @extend %label-position-vertical;
+     bottom: 10px;
   }
 }
 
@@ -206,19 +203,10 @@ $twenty20-label-radius: 2px !default;
   background: rgba(#000,0);
   z-index: 25;
 
-  &:hover {
-    background: $twenty20-overlay-bg;
+  &:hover { background: $twenty20-overlay-bg;
 
-    .#{$pluginPrefix}-after-label {
-      opacity: 1;
-    }
-    .#{$pluginPrefix}-before-label {
-      opacity: 1;
-    }
-
-    .active-switch & {
-      background: rgba(#000,0);
-    }
+    .#{$pluginPrefix}-after-label { opacity: 1; }
+    .#{$pluginPrefix}-before-label { opacity: 1; }
   }
 }
 

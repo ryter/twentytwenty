@@ -19,14 +19,17 @@
       var beforeDirection = (sliderOrientation === 'vertical') ? 'down' : 'left';
       var afterDirection = (sliderOrientation === 'vertical') ? 'up' : 'right';
 
-
       container.wrap("<div class='twentytwenty-wrapper twentytwenty-" + sliderOrientation + "'></div>");
       container.append("<div class='twentytwenty-overlay'></div>");
       var beforeImg = container.find("img:first");
       var afterImg = container.find("img:last");
+      beforeImg.wrap("<div class='twentytwenty-before-wrapper'></div>");
+      afterImg.wrap("<div class='twentytwenty-after-wrapper'></div>");
+
+      var beforeImgWrapper = container.find(".twentytwenty-before-wrapper");
+      var afterImgWrapper = container.find(".twentytwenty-after-wrapper");
 
       container.append("<div class='twentytwenty-handle'></div>");
-
       var slider = container.find(".twentytwenty-handle");
       slider.append("<span class='twentytwenty-" + beforeDirection + "-arrow'></span>");
       slider.append("<span class='twentytwenty-" + afterDirection + "-arrow'></span>");
@@ -35,15 +38,17 @@
       afterImg.addClass("twentytwenty-after");
 
       var overlay = container.find(".twentytwenty-overlay");
-      overlay.append("<div class='twentytwenty-before-label'><span class='twentytwenty-before-switch'></span></div>");
-      overlay.append("<div class='twentytwenty-after-label'><span class='twentytwenty-after-switch'></span></div>");
-
+      var beforeLabel = (beforeImg.data("label")) ? beforeImg.data("label") : "Before";
+      var afterLabel = (afterImg.data("label")) ? afterImg.data("label") : "After";
+      overlay.append("<div class='twentytwenty-before-label twentytwenty-overlay-laber twentytwenty-overlay-laber-text' data-content='" + beforeLabel + "'><span class='twentytwenty-before-switch'></span></div>");
+      overlay.append("<div class='twentytwenty-after-label twentytwenty-overlay-laber twentytwenty-overlay-laber-text'  data-content='" + afterLabel + "'><span class='twentytwenty-after-switch'></span></div>");
+      var overlayLabel = overlay.find(".twentytwenty-overlay-laber");
       var beforeSwitch = container.find(".twentytwenty-before-switch");
       var afterSwitch = container.find(".twentytwenty-after-switch");
 
       var calcOffset = function(dimensionPct) {
         var w = beforeImg.width();
-        var h = beforeImg.height();
+        var h = Math.max(beforeImg.height(), afterImg.height());
         var sbw = beforeSwitch.width();
         var sbh = beforeSwitch.height();
         var saw = afterSwitch.width();
@@ -53,18 +58,21 @@
           h: h+"px",
           cw: (dimensionPct*w)+"px",
           ch: (dimensionPct*h)+"px",
-          sbcw: ((dimensionPct*w)-(sbw/2))+"px",
-          sbch: ((dimensionPct*h)-(sbh/2))+"px",
-          sacw: ((dimensionPct*w)-(saw/2))+"px",
-          sach: ((dimensionPct*h)-(sah/2))+"px"
+          sbcw: ((dimensionPct*w)-(sbw/2)),
+          sbch: ((dimensionPct*h)-(sbh/2)),
+          sacw: ((dimensionPct*w)-(saw/2)),
+          sach: ((dimensionPct*h)-(sah/2))
         };
       };
 
       var adjustContainer = function(offset) {
       	if (sliderOrientation === 'vertical') {
       	  beforeImg.css("clip", "rect(0,"+offset.w+","+offset.ch+",0)");
-      	} else {
+          beforeImgWrapper.css("clip", "rect(0,"+offset.w+","+offset.ch+",0)");
+      	}
+      	else {
           beforeImg.css("clip", "rect(0,"+offset.cw+","+offset.h+",0)");
+          beforeImgWrapper.css("clip", "rect(0,"+offset.cw+","+offset.h+",0)");
     	  }
         container.css("height", offset.h);
       };
@@ -92,21 +100,20 @@
 
       var adjustSwitchPosition = function(offset, s) {
         if(sliderOrientation === 'vertical'){
-          if(s === "beforeSwitch"){
-            beforeSwitch.css("left", "" + offset.sbcw + "");
+          if(s === 'beforeSwitch'){
+            beforeSwitch.css("left", "" + offset.sbcw + "px");
           }
 
-          if(s === "afterSwitch") {
-            afterSwitch.css("left", "" + offset.sacw + "");
+          if(s === 'afterSwitch') {
+            afterSwitch.css("left", "" + offset.sacw + "px");
           }
-
         } else {
-          if(s === "beforeSwitch"){
-            beforeSwitch.css("top", "" + offset.sbch + "");
+          if(s === 'beforeSwitch'){
+            beforeSwitch.css("top", "" + offset.sbch + "px");
           }
 
-          if(s === "afterSwitch") {
-            afterSwitch.css("top", "" + offset.sach + "");
+          if(s === 'afterSwitch') {
+            afterSwitch.css("top", "" + offset.sach + "px");
           }
         }
       };
@@ -119,29 +126,33 @@
 
       var adjustSwitch = function(pct, s) {
         var offset = calcOffset(pct);
+        console.log(offset);
 
         if(s === 'beforeSwitch'){
-          beforeSwitch.css((sliderOrientation==="vertical") ? "left":"top", (sliderOrientation==="vertical") ? offset.sbcw : offset.sbch);
+          beforeSwitch.css((sliderOrientation==="vertical") ? "left":"top", (sliderOrientation==="vertical") ? offset.sbcw + "px" : offset.sbch + "px");
           adjustSwitchPosition(offset, 'beforeSwitch');
         }
 
         if(s === 'afterSwitch') {
-          afterSwitch.css((sliderOrientation==="vertical") ? "left":"top", (sliderOrientation==="vertical") ? offset.sacw : offset.sach);
+          afterSwitch.css((sliderOrientation==="vertical") ? "left":"top", (sliderOrientation==="vertical") ? offset.sacw + "px" : offset.sach + "px");
           adjustSwitchPosition(offset, 'afterSwitch');
+        }
+
+        if(s === 'scroll' && sliderOrientation==="horizontal"){
         }
       };
 
       $(window).on("resize.twentytwenty", function(e) {
         adjustSlider(sliderPct);
-      });
-
-      $(window).on("resize.twentytwenty", function(e) {
         adjustSwitch(switchPctBefore, 'beforeSwitch');
         adjustSwitch(switchPctAfter, 'afterSwitch');
       });
 
+     // var sticky = fixto.fixTo(container, beforeSwitch, options);
+
       var offsetX = 0;
       var imgWidth = 0;
+
 
       slider.on("movestart", function(e) {
         if (((e.distX > e.distY && e.distX < -e.distY) || (e.distX < e.distY && e.distX > -e.distY)) && sliderOrientation !== 'vertical') {
@@ -164,15 +175,12 @@
       slider.on("move", function(e) {
         if (container.hasClass("active")) {
           sliderPct = (sliderOrientation === 'vertical') ? (e.pageY-offsetY)/imgHeight : (e.pageX-offsetX)/imgWidth;
-
           if (sliderPct < 0) {
             sliderPct = 0;
           }
-
           if (sliderPct > 1) {
             sliderPct = 1;
           }
-
           adjustSlider(sliderPct);
         }
       });
@@ -207,8 +215,8 @@
         switchAfterHeight = afterSwitch.height();
         offsetX = container.offset().left;
         offsetY = container.offset().top;
-        imgWidth = beforeImg.width();
-        imgHeight = beforeImg.height();
+        imgWidth = afterImg.width();
+        imgHeight = afterImg.height();
       });
 
       beforeSwitch.on("moveend", function(e) {
@@ -252,7 +260,6 @@
           adjustImgPosition(afterPctImg, 'beforeImg');
         }
       });
-
 
       container.find("img").on("mousedown", function(event) {
         event.preventDefault();

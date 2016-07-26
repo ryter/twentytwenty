@@ -131,8 +131,6 @@
       opacity: 1; }
     .twentytwenty-overlay:hover .twentytwenty-before-label {
       opacity: 1; }
-    .active-switch .twentytwenty-overlay:hover {
-      background: transparent; }
 
 .twentytwenty-before {
   z-index: 20; }
